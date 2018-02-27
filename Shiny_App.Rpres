@@ -1,0 +1,56 @@
+
+Average wages charts by year and location
+========================================================
+author:Elena Golovanova 
+date: 02/21/2018
+
+Average wages source data
+========================================================
+<p align="justify">
+Average wages are obtained by dividing the national-accounts-based total wage bill by the average number of employees in the total economy, which is then multiplied by the ratio of the average usual weekly hours per full-time employee to the average usually weekly hours for all employees. This indicator is measured in USD constant prices using 2016 base year and Purchasing Power Parities (PPPs) for private consumption of the same year.</p>
+
+<p align="left">
+Source data has been obtained here:
+https://data.oecd.org/earnwage/average-wages.htm
+</p>
+
+Usage instructions
+========================================================
+When the application is launched, user is presented with two tabs:
+* first tab allows to select year and render the chart by year
+* second tab allows to select location from a drop down list and render the chart by location
+
+Server logic selects data based on user input.
+
+
+Implementation details: source code
+========================================================
+<small>
+```{r,echo=TRUE}
+data_live<-read.csv('DP_LIVE_21022018210244477.csv')
+datasetInput1<-data_live[data_live$TIME==2016,]
+datasetOrder1<-datasetInput1[order(datasetInput1$Value),]
+# draw the histogram for the specified year
+#barplot(datasetOrder1$Value,names.arg=datasetOrder1$LOCATION,
+#main="Average wages in chosen year:",xlab="Location",ylab="Value",col="blue")
+datasetInput2<-data_live[data_live$LOCATION=='AUS',]
+datasetOrder2<-datasetInput2[order(datasetInput2$Value),]
+# draw the histogram for the specified location
+#barplot(datasetOrder2$Value,names.arg=datasetOrder2$TIME,
+#main="Average wages in chosen location:",xlab="Year",ylab="Value",col="red")
+```
+</small>
+ 
+Charts examples
+========================================================
+
+
+```{r,echo=FALSE}
+barplot(datasetOrder1$Value,names.arg=datasetOrder1$LOCATION,
+            main="Average wages in chosen year:",xlab="Location",ylab="Value",col="blue")
+```
+***
+```{r,echo=FALSE}
+barplot(datasetOrder2$Value,names.arg=datasetOrder2$TIME,
+main="Average wages in chosen location:",xlab="Year",ylab="Value",col="red")
+```
